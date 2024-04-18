@@ -1,43 +1,52 @@
 package io.github.mateuussilvapb.app_corretores.auth;
 
-import org.springframework.http.HttpEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @RestController
 @RequestMapping("/token")
 public class TokenController {
 
+    private final WebClient webClient;
+
+    public TokenController(WebClient webClient) {
+        this.webClient = webClient;
+    }
+
     @PostMapping()
-    public ResponseEntity<String> token(@RequestBody User user) {
+    public TokenResponse token(@RequestBody User user) {
         HttpHeaders headers = new HttpHeaders();
-        RestTemplate rt = new RestTemplate();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-        formData.add("username", user.username());
-        formData.add("password", user.password());
-        formData.add("client_id", user.clientID());
-        formData.add("grant_type", user.grantType());
+        var formData = BodyInserters.fromFormData("username", user.username()).with("password", user.password()).with("client_id", user.clientID()).with("grant_type", user.grantType());
 
-        HttpEntity<MultiValueMap<String, String>> entity =
-                new HttpEntity<MultiValueMap<String, String>>(formData, headers);
-
-        var result = rt.postForEntity("http://localhost:8080/realms/manager/protocol/openid" +
-                        "-connect/token",
-                entity, String.class);
-
-        return result;
+        return webClient.post().uri("http://localhost:8080/realms/manager/protocol/openid-connect/token").headers(httpHeaders -> httpHeaders.addAll(headers)).body(formData).retrieve().bodyToMono(TokenResponse.class).block();
     }
 
     public record User(String username, String password, String clientID, String grantType) {
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class TokenResponse {
+        public String access_token;
+        public int expires_in;
+        public int refresh_expires_in;
+        public String refresh_token;
+        public String token_type;
+        public String session_state;
+        public String scope;
     }
 }

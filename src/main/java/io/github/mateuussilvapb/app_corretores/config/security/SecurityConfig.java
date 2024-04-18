@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private static final String[] ALLOW_ACCESS = {"/h2-console/**"};
+    private static final String[] ALLOW_ACCESS = {"/h2-console/**", "/token"};
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
