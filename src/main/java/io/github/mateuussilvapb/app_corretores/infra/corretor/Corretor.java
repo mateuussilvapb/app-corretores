@@ -1,22 +1,24 @@
-package io.github.mateuussilvapb.app_corretores.corretor;
+package io.github.mateuussilvapb.app_corretores.infra.corretor;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.github.mateuussilvapb.app_corretores.config.persistence.CreateAuditableEntity;
-import io.github.mateuussilvapb.app_corretores.endereco.Endereco;
-import io.github.mateuussilvapb.app_corretores.vale.Vale;
+import io.github.mateuussilvapb.app_corretores.infra.endereco.Endereco;
+import io.github.mateuussilvapb.app_corretores.infra.vale.Vale;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
 @Table(name = "tb_corretor")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Corretor extends CreateAuditableEntity {

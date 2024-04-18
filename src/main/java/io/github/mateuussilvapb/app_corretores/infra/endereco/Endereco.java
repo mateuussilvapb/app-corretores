@@ -1,24 +1,21 @@
-package io.github.mateuussilvapb.app_corretores.endereco;
+package io.github.mateuussilvapb.app_corretores.infra.endereco;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.github.mateuussilvapb.app_corretores.config.persistence.CreateAuditableEntity;
-import io.github.mateuussilvapb.app_corretores.corretor.Corretor;
+import io.github.mateuussilvapb.app_corretores.infra.corretor.Corretor;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tb_endereco")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Endereco extends CreateAuditableEntity {
     @NotBlank
     @Size(max = 9)
