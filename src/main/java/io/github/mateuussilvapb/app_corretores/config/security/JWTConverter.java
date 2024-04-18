@@ -1,4 +1,4 @@
-package io.github.mateuussilvapb.app_corretores.security;
+package io.github.mateuussilvapb.app_corretores.config.security;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
