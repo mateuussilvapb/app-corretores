@@ -21,7 +21,13 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(new JWTConverter())))
                 .headers(headers -> headers.frameOptions().sameOrigin()) // Allow same origin to frame our site
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers(ALLOW_ACCESS).permitAll());
+                .authorizeHttpRequests(authorize ->
+                        authorize
+                                .requestMatchers(ALLOW_ACCESS)
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
+                );
         return http.build();
     }
 }
