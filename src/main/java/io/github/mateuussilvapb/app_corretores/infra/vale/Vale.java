@@ -1,5 +1,6 @@
 package io.github.mateuussilvapb.app_corretores.infra.vale;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.github.mateuussilvapb.app_corretores.config.persistence.CreateAuditableEntity;
 import io.github.mateuussilvapb.app_corretores.infra.corretor.Corretor;
 import jakarta.persistence.Entity;
@@ -25,6 +26,7 @@ public class Vale extends CreateAuditableEntity {
     private BigDecimal valor;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "corretor_id")
     private Corretor corretor;
 }

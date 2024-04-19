@@ -10,11 +10,17 @@ import java.util.Collection;
 import java.util.Map;
 
 public class JWTConverter implements Converter<Jwt, AbstractAuthenticationToken> {
+    private static final String CLIENT_ID = "app_segundo";
+
     @Override
     public AbstractAuthenticationToken convert(Jwt jwt) {
-        Map<String, Collection<String>> realmAccess = jwt.getClaim("realm_access");
-        Collection<String> roles = realmAccess.get("roles");
-        var grants = roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).toList();
+        Map<String, Collection<String>> resourceAccess = jwt.getClaim("resource_access");
+        if (resourceAccess == null) return null;
+
+        Map<String, Collection<String>> client = (Map<String, Collection<String>>) resourceAccess.get(CLIENT_ID);
+        if (client == null || client.get("roles") == null) return null;
+
+        var grants = client.get("roles").stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).toList();
         return new JwtAuthenticationToken(jwt, grants);
     }
 }

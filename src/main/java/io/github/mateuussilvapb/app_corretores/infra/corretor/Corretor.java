@@ -1,6 +1,7 @@
 package io.github.mateuussilvapb.app_corretores.infra.corretor;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.github.mateuussilvapb.app_corretores.config.persistence.CreateAuditableEntity;
 import io.github.mateuussilvapb.app_corretores.infra.endereco.Endereco;
@@ -30,6 +31,7 @@ public class Corretor extends CreateAuditableEntity {
 
     @NotNull
     @Column(nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date dataNascimento;
 
     @NotBlank
