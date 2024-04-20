@@ -3,6 +3,7 @@ package io.github.mateuussilvapb.app_corretores.infra.endereco;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.github.mateuussilvapb.app_corretores.config.persistence.CreateAuditableEntity;
 import io.github.mateuussilvapb.app_corretores.infra.corretor.Corretor;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -31,6 +32,9 @@ public class Endereco extends CreateAuditableEntity {
     @Size(max = 2)
     private String uf;
 
+    @NotBlank
+    private String rua;
+
     private String complemento;
 
     @NotBlank
@@ -38,9 +42,8 @@ public class Endereco extends CreateAuditableEntity {
 
     private String referencia;
 
-    private String observacao;
-
     @JsonBackReference
-    @OneToOne(mappedBy = "endereco")
+    @OneToOne(mappedBy = "endereco", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.REFRESH, CascadeType.DETACH})
     private Corretor corretor;
 }
