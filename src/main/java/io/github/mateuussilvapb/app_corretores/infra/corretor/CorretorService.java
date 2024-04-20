@@ -1,6 +1,9 @@
 package io.github.mateuussilvapb.app_corretores.infra.corretor;
 
 import io.github.mateuussilvapb.app_corretores.infra.corretor.exceptions.CorretorNotFoundException;
+import io.github.mateuussilvapb.app_corretores.infra.endereco.Endereco;
+import io.github.mateuussilvapb.app_corretores.infra.endereco.EnderecoRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,7 @@ import java.util.List;
 public class CorretorService {
 
     private final CorretorRepository corretorRepository;
+    private final EnderecoRepository enderecoRepository;
 
     public List<Corretor> findAll() {
         return corretorRepository.findAll();
@@ -29,7 +33,6 @@ public class CorretorService {
         corretorRepository.deleteById(id);
     }
 
-
     public Corretor update(Long id, Corretor updatedCorretor) {
         return corretorRepository.findById(id)
                 .map(corretor -> {
@@ -38,5 +41,21 @@ public class CorretorService {
                     return corretorRepository.save(corretor);
                 })
                 .orElseThrow(() -> new CorretorNotFoundException(id));
+    }
+
+    @Transactional
+    public Endereco addEndereco(Long corretorId, Endereco endereco) {
+        Corretor corretor = findById(corretorId);
+        Endereco savedEndereco = enderecoRepository.save(endereco);
+        corretor.setEndereco(savedEndereco);
+        corretorRepository.save(corretor);
+        return savedEndereco;
+    }
+
+    @Transactional
+    public void removeEndereco(Long corretorId) {
+        Corretor corretor = findById(corretorId);
+        corretor.setEndereco(null);
+        corretorRepository.save(corretor);
     }
 }

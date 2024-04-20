@@ -39,12 +39,12 @@ public class Corretor extends CreateAuditableEntity {
     @Column(nullable = false, unique = true)
     private String cpf;
 
-    @OneToOne
     @JsonManagedReference
     @JoinColumn(name = "fk_endereco_id")
+    @OneToOne(cascade = CascadeType.ALL)
     private Endereco endereco;
 
-    @OneToMany(mappedBy = "corretor", cascade = CascadeType.ALL)
     @JsonManagedReference
+    @OneToMany(mappedBy = "corretor", cascade = CascadeType.ALL)
     private List<Vale> vales = new ArrayList<>();
 }
