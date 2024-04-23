@@ -1,7 +1,7 @@
 package io.github.mateuussilvapb.app_corretores.infra.endereco;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import io.github.mateuussilvapb.app_corretores.config.persistence.CreateAuditableEntity;
+import io.github.mateuussilvapb.app_corretores.config.persistence.DomainEntity;
 import io.github.mateuussilvapb.app_corretores.infra.corretor.Corretor;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -17,7 +17,7 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "tb_endereco")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Endereco extends CreateAuditableEntity {
+public class Endereco extends DomainEntity {
     @NotBlank
     @Size(max = 9)
     private String cep;
