@@ -3,6 +3,8 @@ package io.github.mateuussilvapb.app_corretores.infra.corretor;
 import io.github.mateuussilvapb.app_corretores.infra.corretor.exceptions.CorretorNotFoundException;
 import io.github.mateuussilvapb.app_corretores.infra.endereco.Endereco;
 import io.github.mateuussilvapb.app_corretores.infra.endereco.EnderecoRepository;
+import io.github.mateuussilvapb.app_corretores.infra.vale.Vale;
+import io.github.mateuussilvapb.app_corretores.infra.vale.ValeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ public class CorretorService {
 
     private final CorretorRepository corretorRepository;
     private final EnderecoRepository enderecoRepository;
+    private final ValeRepository valeRepository;
 
     public List<Corretor> findAll() {
         return corretorRepository.findAll();
@@ -60,6 +63,26 @@ public class CorretorService {
     public void removeEndereco(Long corretorId) {
         Corretor corretor = findById(corretorId);
         corretor.setEndereco(null);
+        corretorRepository.save(corretor);
+    }
+
+    @Transactional
+    public Vale addVale(Long corretorId, Vale vale) {
+        Corretor corretor = findById(corretorId);
+        vale.setCorretor(corretor);
+        corretor.getVales().add(vale);
+        corretorRepository.save(corretor);
+        return vale;
+    }
+
+    @Transactional
+    public void removeVale(Long corretorId, Long valeId) {
+        Corretor corretor = findById(corretorId);
+        Vale vale = corretor.getVales().stream()
+                .filter(v -> v.getId().equals(valeId))
+                .findFirst()
+                .orElseThrow(() -> new CorretorNotFoundException(corretorId));
+        corretor.getVales().remove(vale);
         corretorRepository.save(corretor);
     }
 }
