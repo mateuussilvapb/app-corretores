@@ -20,6 +20,10 @@ public class CorretorService {
         return corretorRepository.findAll();
     }
 
+    public Corretor findByCpf(String cpf) {
+        return corretorRepository.findByCpf(cpf).orElseThrow(() -> new CorretorNotFoundException(cpf));
+    }
+
     public Corretor save(Corretor corretor) {
         return corretorRepository.save(corretor);
     }

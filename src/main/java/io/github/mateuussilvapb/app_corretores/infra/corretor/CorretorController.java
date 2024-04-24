@@ -22,6 +22,13 @@ public class CorretorController {
         return new ResponseEntity<>(corretores, HttpStatus.OK);
     }
 
+    @GetMapping("/cpf/{cpf}")
+    @RolesAllowed({"employee", "manager", "admin"})
+    public ResponseEntity<Corretor> findByCpf(@RequestParam String cpf) {
+        Corretor corretor = corretorService.findByCpf(cpf);
+        return new ResponseEntity<>(corretor, HttpStatus.OK);
+    }
+
     @PostMapping
     @RolesAllowed({"employee", "manager", "admin"})
     public ResponseEntity<Corretor> save(@RequestBody Corretor corretor) {
