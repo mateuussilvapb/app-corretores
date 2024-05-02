@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/corretor")
+@RequestMapping("/corretores")
 public class CorretorController {
 
     private final CorretorService corretorService;

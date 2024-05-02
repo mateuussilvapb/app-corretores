@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/vale")
+@RequestMapping("/vales")
 public class ValeController {
 
     private final ValeService valeService;
@@ -37,7 +37,7 @@ public class ValeController {
         valeResponseComplete.setCorretor(corretor);
         valeResponseComplete.setTotal(valesByCorretorCPF.stream()
                 .map(Vale::getValor)
-                .reduce((a, b) -> a.add(b))
+                .reduce(BigDecimal::add)
                 .orElse(null));
         return new ResponseEntity<>(valeResponseComplete, HttpStatus.OK);
     }

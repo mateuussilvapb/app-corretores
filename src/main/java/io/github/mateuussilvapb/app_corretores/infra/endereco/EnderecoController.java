@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/corretor/{corretorId}/endereco")
+@RequestMapping("/corretores/{corretorId}/enderecos")
 public class EnderecoController {
 
     private final CorretorService corretorService;

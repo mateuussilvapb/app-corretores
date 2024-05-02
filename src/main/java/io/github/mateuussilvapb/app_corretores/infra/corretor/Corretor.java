@@ -12,8 +12,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,13 +26,13 @@ public class Corretor extends CreateAuditableEntity {
 
     @NotBlank
     @Size(max = 100)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nome;
 
     @NotNull
     @Column(nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date dataNascimento;
+    private LocalDateTime dataNascimento;
 
     @NotBlank
     @Size(max = 11)

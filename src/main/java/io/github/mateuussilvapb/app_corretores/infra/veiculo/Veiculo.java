@@ -20,6 +20,7 @@ public class Veiculo extends DomainEntity {
 
     @NotBlank
     @Size(max = 7)
+    @Column(nullable = false, unique = true)
     private String placa;
 
     @NotBlank

@@ -3,10 +3,11 @@ package io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo;
 import io.github.mateuussilvapb.app_corretores.config.persistence.CreateAuditableEntity;
 import io.github.mateuussilvapb.app_corretores.infra.corretor.Corretor;
 import io.github.mateuussilvapb.app_corretores.infra.veiculo.Veiculo;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -15,10 +16,6 @@ import java.util.Date;
 @Table(name = "tb_corretor_veiculo")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CorretorVeiculo extends CreateAuditableEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @ManyToOne
     @JoinColumn(name = "corretor_id")
     private Corretor corretor;
@@ -27,7 +24,8 @@ public class CorretorVeiculo extends CreateAuditableEntity {
     @JoinColumn(name = "veiculo_id")
     private Veiculo veiculo;
 
-    @Column(updatable = false)
-    @Temporal(TemporalType.DATE)
-    private Date dataDevolucao;
+    @Nullable
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime dataDevolucao;
 }
