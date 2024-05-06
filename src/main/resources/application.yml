@@ -1,0 +1,10 @@
+spring:
+
+  profiles:
+    active: dev
+
+  application:
+    name: app_corretores
+
+server:
+  port: 8081
