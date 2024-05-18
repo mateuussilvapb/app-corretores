@@ -4,7 +4,7 @@ import io.github.mateuussilvapb.app_corretores.infra.corretor.exceptions.Correto
 import io.github.mateuussilvapb.app_corretores.infra.endereco.Endereco;
 import io.github.mateuussilvapb.app_corretores.infra.endereco.EnderecoRepository;
 import io.github.mateuussilvapb.app_corretores.infra.vale.Vale;
-import io.github.mateuussilvapb.app_corretores.infra.vale.ValeRepository;
+import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,10 +17,16 @@ public class CorretorService {
 
     private final CorretorRepository corretorRepository;
     private final EnderecoRepository enderecoRepository;
-    private final ValeRepository valeRepository;
 
     public List<Corretor> findAll() {
         return corretorRepository.findAll();
+    }
+
+    public List<Corretor> findCorretor(String searchTerm) {
+        if (StringUtils.isBlank(searchTerm)) {
+            return corretorRepository.findAll();
+        }
+        return findAll().stream().filter(corretor -> corretor.matchSearchTerm(searchTerm)).toList();
     }
 
     public Corretor findByCpf(String cpf) {

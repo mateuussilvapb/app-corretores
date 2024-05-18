@@ -11,10 +11,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -47,4 +49,11 @@ public class Corretor extends CreateAuditableEntity {
     @JsonManagedReference
     @OneToMany(mappedBy = "corretor", cascade = CascadeType.ALL)
     private List<Vale> vales = new ArrayList<>();
+
+    public boolean matchSearchTerm(String searchTerm) {
+        if (StringUtils.isBlank(searchTerm)) {
+            return false;
+        }
+        return Objects.equals(getCpf(), searchTerm) || getNome().toLowerCase().contains(searchTerm.toLowerCase());
+    }
 }

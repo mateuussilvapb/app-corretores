@@ -22,6 +22,13 @@ public class CorretorController {
         return new ResponseEntity<>(corretores, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    @RolesAllowed({"employee", "manager", "admin"})
+    public ResponseEntity<Corretor> findById(@PathVariable Long id) {
+        Corretor corretor = corretorService.findById(id);
+        return new ResponseEntity<>(corretor, HttpStatus.OK);
+    }
+
     @GetMapping("/cpf/{cpf}")
     @RolesAllowed({"employee", "manager", "admin"})
     public ResponseEntity<Corretor> findByCpf(@RequestParam String cpf) {
@@ -29,18 +36,18 @@ public class CorretorController {
         return new ResponseEntity<>(corretor, HttpStatus.OK);
     }
 
+    @GetMapping("/search")
+    @RolesAllowed({"employee", "manager", "admin"})
+    public ResponseEntity<List<Corretor>> findCorretor(@RequestParam(name = "term", required = false) String searchTerm) {
+        List<Corretor> corretores = corretorService.findCorretor(searchTerm);
+        return new ResponseEntity<>(corretores, HttpStatus.OK);
+    }
+
     @PostMapping
     @RolesAllowed({"employee", "manager", "admin"})
     public ResponseEntity<Corretor> save(@RequestBody Corretor corretor) {
         Corretor savedCorretor = corretorService.save(corretor);
         return new ResponseEntity<>(savedCorretor, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/{id}")
-    @RolesAllowed({"employee", "manager", "admin"})
-    public ResponseEntity<Corretor> findById(@PathVariable Long id) {
-        Corretor corretor = corretorService.findById(id);
-        return new ResponseEntity<>(corretor, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
