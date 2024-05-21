@@ -14,7 +14,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +39,7 @@ public class Corretor extends CreateAuditableEntity implements Referable<String>
     @NotNull
     @Column(nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private LocalDateTime dataNascimento;
+    private LocalDate dataNascimento;
 
     @NotBlank
     @Size(max = 11)
