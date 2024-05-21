@@ -1,5 +1,6 @@
 package io.github.mateuussilvapb.app_corretores.infra.corretor;
 
+import io.github.mateuussilvapb.app_corretores.shared.Reference;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,9 +39,11 @@ public class CorretorController {
 
     @GetMapping("/search")
     @RolesAllowed({"employee", "manager", "admin"})
-    public ResponseEntity<List<Corretor>> findCorretor(@RequestParam(name = "term", required = false) String searchTerm) {
-        List<Corretor> corretores = corretorService.findCorretor(searchTerm);
-        return new ResponseEntity<>(corretores, HttpStatus.OK);
+    public ResponseEntity<List<Reference<String>>> findCorretor(@RequestParam(name = "term",
+            required =
+                    false) String searchTerm) {
+        return new ResponseEntity<>(Reference.valueOf(corretorService.findCorretor(searchTerm)),
+                HttpStatus.OK);
     }
 
     @PostMapping

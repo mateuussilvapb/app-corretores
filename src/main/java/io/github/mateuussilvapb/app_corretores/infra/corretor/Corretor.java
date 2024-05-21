@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.github.mateuussilvapb.app_corretores.config.persistence.CreateAuditableEntity;
 import io.github.mateuussilvapb.app_corretores.infra.endereco.Endereco;
 import io.github.mateuussilvapb.app_corretores.infra.vale.Vale;
+import io.github.mateuussilvapb.app_corretores.shared.Referable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,12 +25,16 @@ import java.util.Objects;
 @AllArgsConstructor
 @Table(name = "tb_corretor")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Corretor extends CreateAuditableEntity {
+public class Corretor extends CreateAuditableEntity implements Referable<String> {
 
     @NotBlank
     @Size(max = 100)
     @Column(nullable = false, unique = true)
     private String nome;
+
+    @NotBlank
+    @Size(max = 100)
+    private String apelido;
 
     @NotNull
     @Column(nullable = false)
@@ -54,6 +59,18 @@ public class Corretor extends CreateAuditableEntity {
         if (StringUtils.isBlank(searchTerm)) {
             return false;
         }
-        return Objects.equals(getCpf(), searchTerm) || getNome().toLowerCase().contains(searchTerm.toLowerCase());
+        return Objects.equals(getCpf(), searchTerm)
+                || getNome().toLowerCase().contains(searchTerm.toLowerCase())
+                || getApelido().toLowerCase().contains(searchTerm.toLowerCase());
+    }
+
+    @Override
+    public String getIdentificacao() {
+        return getIdString();
+    }
+
+    @Override
+    public String getDescricao() {
+        return getNome();
     }
 }
