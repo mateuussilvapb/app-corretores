@@ -13,6 +13,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ public class Corretor extends CreateAuditableEntity implements Referable<String>
     private Endereco endereco;
 
     @JsonManagedReference
+    @Fetch(FetchMode.JOIN)
     @OneToMany(mappedBy = "corretor", cascade = CascadeType.ALL)
     private List<Vale> vales = new ArrayList<>();
 

@@ -1,5 +1,7 @@
 package io.github.mateuussilvapb.app_corretores.exception;
 
+import io.github.mateuussilvapb.app_corretores.infra.corretor.exceptions.CorretorComMesmoCPFException;
+import io.github.mateuussilvapb.app_corretores.infra.corretor.exceptions.CorretorComMesmoNomeException;
 import io.github.mateuussilvapb.app_corretores.infra.corretor.exceptions.CorretorNotFoundException;
 import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.exceptions.*;
 import io.github.mateuussilvapb.app_corretores.infra.endereco.exceptions.EnderecoNotFoundException;
@@ -114,6 +116,26 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(VeiculoAtribuidoOutroCorretorException.class)
     public ResponseEntity<ErrorResponse> handleVeiculoAtribuidoOutroCorretor(Exception ex) {
+        log.error(ex.getMessage(), ex);
+        return new ResponseEntity<>(
+                new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getClass().getName(),
+                        ex.getMessage(),
+                        LocalDateTime.now()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CorretorComMesmoNomeException.class)
+    public ResponseEntity<ErrorResponse> handleCorretorComMesmoNome(Exception ex) {
+        log.error(ex.getMessage(), ex);
+        return new ResponseEntity<>(
+                new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getClass().getName(),
+                        ex.getMessage(),
+                        LocalDateTime.now()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CorretorComMesmoCPFException.class)
+    public ResponseEntity<ErrorResponse> handleCorretorComMesmoCPF(Exception ex) {
         log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(
                 new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getClass().getName(),

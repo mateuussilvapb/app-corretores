@@ -16,4 +16,6 @@ public interface CorretorRepository extends JpaRepository<Corretor, Long> {
     @Cacheable("findAllCorretores")
     @SuppressWarnings("NullableProblems")
     List<Corretor> findAll();
+
+    Optional<Object> findByNome(String nome);
 }
