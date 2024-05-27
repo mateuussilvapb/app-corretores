@@ -30,11 +30,10 @@ import java.util.Objects;
 public class Corretor extends CreateAuditableEntity implements Referable<String> {
 
     @NotBlank
-    @Size(max = 100)
+    @Size(min = 5, max = 100)
     @Column(nullable = false, unique = true)
     private String nome;
 
-    @NotBlank
     @Size(max = 100)
     private String apelido;
 
