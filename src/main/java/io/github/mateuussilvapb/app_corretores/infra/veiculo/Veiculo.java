@@ -1,10 +1,8 @@
 package io.github.mateuussilvapb.app_corretores.infra.veiculo;
 
 import io.github.mateuussilvapb.app_corretores.config.persistence.DomainEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -31,7 +29,19 @@ public class Veiculo extends DomainEntity {
 
     @NotNull
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "dia", column = @Column(name = "dia_vencimento_documento")),
+            @AttributeOverride(name = "mes", column = @Column(name = "mes_vencimento_documento"))
+    })
     private Vencimento vencimentoDocumento;
+
+    @Nullable
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "dia", column = @Column(name = "dia_vencimento_seguro")),
+            @AttributeOverride(name = "mes", column = @Column(name = "mes_vencimento_seguro"))
+    })
+    private Vencimento vencimentoSeguro;
 
     @NotNull
     @Column(nullable = false)

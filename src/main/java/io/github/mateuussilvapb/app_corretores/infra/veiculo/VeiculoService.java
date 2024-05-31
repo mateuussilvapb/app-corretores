@@ -45,6 +45,7 @@ public class VeiculoService {
                 .map(veiculo -> {
                     veiculo.setUfDocumento(veiculoAtualizado.getUfDocumento());
                     veiculo.setVencimentoDocumento(veiculoAtualizado.getVencimentoDocumento());
+                    veiculo.setVencimentoSeguro(veiculoAtualizado.getVencimentoSeguro());
                     return veiculoRepository.save(veiculo);
                 })
                 .orElseThrow(() -> new VeiculoNotFoundException(id));
