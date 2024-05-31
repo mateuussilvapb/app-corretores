@@ -63,7 +63,7 @@ public class Corretor extends CreateAuditableEntity implements Referable<String>
         }
         return Objects.equals(getCpf(), searchTerm)
                 || getNome().toLowerCase().contains(searchTerm.toLowerCase())
-                || getApelido().toLowerCase().contains(searchTerm.toLowerCase());
+                || (getApelido() != null && getApelido().toLowerCase().contains(searchTerm.toLowerCase()));
     }
 
     @Override
