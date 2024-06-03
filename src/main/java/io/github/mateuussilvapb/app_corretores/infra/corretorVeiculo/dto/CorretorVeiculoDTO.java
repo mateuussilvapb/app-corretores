@@ -14,4 +14,5 @@ public class CorretorVeiculoDTO {
     private String idString;
     private Veiculo veiculo;
     private LocalDateTime dataDevolucao;
+    private LocalDateTime dataAtribuicao;
 }

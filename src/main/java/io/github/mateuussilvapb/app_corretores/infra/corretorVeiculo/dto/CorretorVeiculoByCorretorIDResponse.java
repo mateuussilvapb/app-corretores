@@ -25,7 +25,8 @@ public class CorretorVeiculoByCorretorIDResponse {
                                         new CorretorVeiculoDTO(
                                                 corretorVeiculo.getIdString(),
                                                 corretorVeiculo.getVeiculo(),
-                                                corretorVeiculo.getDataDevolucao()))
+                                                corretorVeiculo.getDataDevolucao(),
+                                                corretorVeiculo.getCreatedAt()))
                         .collect(Collectors.toList());
     }
 }
