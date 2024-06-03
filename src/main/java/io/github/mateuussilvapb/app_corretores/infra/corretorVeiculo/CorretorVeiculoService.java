@@ -1,5 +1,6 @@
 package io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo;
 
+import io.github.mateuussilvapb.app_corretores.infra.corretor.CorretorService;
 import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.exceptions.CorretorVeiculoByCorretorIdNotFoundException;
 import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.exceptions.CorretorVeiculoByVeiculoIdNotFoundException;
 import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.exceptions.CorretorVeiculoNotFoundException;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CorretorVeiculoService {
 
+    private final CorretorService corretorService;
     private final CorretorVeiculoRepository corretorVeiculoRepository;
     private final CorretorVeiculoMapper corretorVeiculoMapper;
     private final CorretorVeiculoValidate corretorVeiculoValidate;
@@ -41,6 +43,7 @@ public class CorretorVeiculoService {
     }
 
     public List<CorretorVeiculo> findHistoricoByCorretorId(Long corretorId) {
+        this.corretorService.findById(corretorId);
         return corretorVeiculoRepository.findByCorretorId(corretorId).orElseThrow(() -> new CorretorVeiculoByCorretorIdNotFoundException(corretorId));
     }
 

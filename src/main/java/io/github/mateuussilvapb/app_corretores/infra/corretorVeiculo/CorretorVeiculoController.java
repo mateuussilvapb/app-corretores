@@ -1,9 +1,9 @@
 package io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo;
 
+import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.dto.CorretorVeiculoByCorretorIDResponse;
 import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.request.CorretorVeiculoRequest;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,8 +44,9 @@ public class CorretorVeiculoController {
 
     @GetMapping("/historico/corretor/{corretorId}")
     @RolesAllowed({"employee", "manager", "admin"})
-    public ResponseEntity<List<CorretorVeiculo>> getHistoricoByCorretorId(@PathVariable Long corretorId) {
-        return ResponseEntity.ok(corretorVeiculoService.findHistoricoByCorretorId(corretorId));
+    public ResponseEntity<CorretorVeiculoByCorretorIDResponse> getHistoricoByCorretorId(@PathVariable Long corretorId) {
+        var corretorVeiculo = corretorVeiculoService.findHistoricoByCorretorId(corretorId);
+        return ResponseEntity.ok(new CorretorVeiculoByCorretorIDResponse(corretorVeiculo));
     }
 
     @GetMapping("/historico/veiculo/{veiculoId}")
