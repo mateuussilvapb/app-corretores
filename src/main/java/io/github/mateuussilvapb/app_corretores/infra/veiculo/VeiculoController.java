@@ -22,6 +22,13 @@ public class VeiculoController {
         return new ResponseEntity<>(veiculos, HttpStatus.OK);
     }
 
+    @GetMapping("/filters")
+    @RolesAllowed({"employee", "manager", "admin"})
+    public ResponseEntity<List<Veiculo>> findByFilters(
+            VeiculoFilters filters) {
+        return new ResponseEntity<>(this.veiculoService.findByFilters(filters), HttpStatus.OK);
+    }
+
     @PostMapping
     @RolesAllowed({"employee", "manager", "admin"})
     public ResponseEntity<Veiculo> save(@RequestBody Veiculo veiculo) {
@@ -31,7 +38,8 @@ public class VeiculoController {
 
     @PutMapping("/{id}")
     @RolesAllowed({"employee", "manager", "admin"})
-    public ResponseEntity<Veiculo> updateById(@PathVariable Long id, @RequestBody VeiculoRequestUpdate veiculo) {
+    public ResponseEntity<Veiculo> updateById(@PathVariable Long
+                                                      id, @RequestBody VeiculoRequestUpdate veiculo) {
         Veiculo updatedVeiculo = veiculoService.updateById(id, veiculo);
         return new ResponseEntity<>(updatedVeiculo, HttpStatus.OK);
     }

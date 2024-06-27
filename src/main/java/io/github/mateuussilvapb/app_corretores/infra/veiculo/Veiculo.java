@@ -45,11 +45,11 @@ public class Veiculo extends DomainEntity {
 
     @NotNull
     @Column(nullable = false)
-    private String anoFabricacao;
+    private Integer anoFabricacao;
 
     @NotNull
     @Column(nullable = false)
-    private String anoModelo;
+    private Integer anoModelo;
 
     @NotBlank
     @Size(max = 2)

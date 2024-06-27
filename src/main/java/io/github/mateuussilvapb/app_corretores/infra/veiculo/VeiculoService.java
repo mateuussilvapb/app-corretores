@@ -50,4 +50,8 @@ public class VeiculoService {
                 })
                 .orElseThrow(() -> new VeiculoNotFoundException(id));
     }
+
+    public List<Veiculo> findByFilters(VeiculoFilters filters) {
+        return veiculoRepository.findAllWithFilters(filters);
+    }
 }

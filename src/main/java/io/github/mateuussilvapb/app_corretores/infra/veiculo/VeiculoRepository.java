@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface VeiculoRepository extends JpaRepository<Veiculo, Long> {
+public interface VeiculoRepository extends JpaRepository<Veiculo, Long>, VeiculoRepositoryCustom {
     Optional<Veiculo> findByPlaca(String placa);
 }
