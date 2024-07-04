@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,8 +52,8 @@ public class CorretorVeiculoService {
         return corretorVeiculoRepository.findByVeiculoId(veiculoId).orElseThrow(() -> new CorretorVeiculoByVeiculoIdNotFoundException(veiculoId));
     }
 
-    public CorretorVeiculo findTopByVeiculoIdAndDataDevolucaoIsNullOrderByIdDesc(Long veiculoId) {
-        return corretorVeiculoRepository.findTopByVeiculoIdAndDataDevolucaoIsNullOrderByIdDesc(veiculoId).orElseThrow(() -> new CorretorVeiculoByVeiculoIdNotFoundException(veiculoId));
+    public Optional<CorretorVeiculo> findTopByVeiculoIdAndDataDevolucaoIsNullOrderByIdDesc(Long veiculoId) {
+        return corretorVeiculoRepository.findTopByVeiculoIdAndDataDevolucaoIsNullOrderByIdDesc(veiculoId);
     }
 
     public CorretorVeiculo updateDataDevolucao(Long id, LocalDateTime dataDevolucao) {

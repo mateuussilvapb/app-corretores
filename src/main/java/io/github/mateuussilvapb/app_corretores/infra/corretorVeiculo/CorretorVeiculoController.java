@@ -58,7 +58,10 @@ public class CorretorVeiculoController {
     @GetMapping("/veiculo/{veiculoId}")
     @RolesAllowed({"employee", "manager", "admin"})
     public ResponseEntity<CorretorVeiculo> getCorretorVeiculoByVeiculoId(@PathVariable Long veiculoId) {
-        return ResponseEntity.ok(corretorVeiculoService.findTopByVeiculoIdAndDataDevolucaoIsNullOrderByIdDesc(veiculoId));
+        return corretorVeiculoService
+                .findTopByVeiculoIdAndDataDevolucaoIsNullOrderByIdDesc(veiculoId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
     @PutMapping("/{id}/devolucao")
