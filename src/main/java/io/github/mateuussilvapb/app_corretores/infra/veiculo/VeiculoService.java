@@ -4,6 +4,9 @@ import io.github.mateuussilvapb.app_corretores.infra.veiculo.exception.VeiculoNo
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -13,7 +16,32 @@ public class VeiculoService {
     private final VeiculoRepository veiculoRepository;
 
     public List<Veiculo> findAll() {
-        return veiculoRepository.findAll();
+        List<Veiculo> veiculos = veiculoRepository.findAll();
+
+        veiculos.sort(Comparator.comparing(veiculo -> {
+            Vencimento vencimentoDocumento = veiculo.getVencimentoDocumento();
+            Vencimento vencimentoSeguro = veiculo.getVencimentoSeguro();
+
+            LocalDate dataVencimentoDocumento = LocalDate.of(LocalDate.now().getYear(), Month.of(vencimentoDocumento.getMes()), vencimentoDocumento.getDia());
+            LocalDate dataVencimentoSeguro;
+
+            if (vencimentoSeguro != null && vencimentoSeguro.getMes() != 0 && vencimentoSeguro.getDia() != 0) {
+                dataVencimentoSeguro = LocalDate.of(LocalDate.now().getYear(), Month.of(vencimentoSeguro.getMes()), vencimentoSeguro.getDia());
+            } else {
+                dataVencimentoSeguro = LocalDate.of(9999, 12, 31);
+            }
+
+            LocalDate dataMaisProxima = dataVencimentoDocumento.isBefore(dataVencimentoSeguro) ? dataVencimentoDocumento : dataVencimentoSeguro;
+
+            // Se a data de vencimento for anterior à data atual, retorne uma data futura fixa
+            if (dataMaisProxima.isBefore(LocalDate.now())) {
+                return LocalDate.of(9999, 12, 31);
+            }
+
+            return dataMaisProxima;
+        }));
+
+        return veiculos;
     }
 
     public Veiculo save(Veiculo veiculo) {
