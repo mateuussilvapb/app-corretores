@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CorretorVeiculoDTO {
+public class CorretorVeiculoByVeiculoDTO {
     private String idString;
     private Veiculo veiculo;
     private LocalDateTime dataDevolucao;

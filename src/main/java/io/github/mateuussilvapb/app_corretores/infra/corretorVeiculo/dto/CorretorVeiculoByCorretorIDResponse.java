@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class CorretorVeiculoByCorretorIDResponse {
     private Corretor corretor;
-    private List<CorretorVeiculoDTO> historico;
+    private List<CorretorVeiculoByVeiculoDTO> historico;
 
     public CorretorVeiculoByCorretorIDResponse(List<CorretorVeiculo> corretorVeiculos) {
         this.corretor = corretorVeiculos.get(0).getCorretor();
@@ -22,7 +22,7 @@ public class CorretorVeiculoByCorretorIDResponse {
                 corretorVeiculos.stream()
                         .map(
                                 corretorVeiculo ->
-                                        new CorretorVeiculoDTO(
+                                        new CorretorVeiculoByVeiculoDTO(
                                                 corretorVeiculo.getIdString(),
                                                 corretorVeiculo.getVeiculo(),
                                                 corretorVeiculo.getDataDevolucao(),

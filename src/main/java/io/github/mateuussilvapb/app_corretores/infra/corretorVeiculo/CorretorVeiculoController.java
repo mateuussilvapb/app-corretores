@@ -1,5 +1,6 @@
 package io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo;
 
+import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.dto.CorretorVeiculoGroupByVeiculoDTO;
 import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.dto.CorretorVeiculoByCorretorIDResponse;
 import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.request.CorretorVeiculoRequest;
 import jakarta.annotation.security.RolesAllowed;
@@ -51,7 +52,7 @@ public class CorretorVeiculoController {
 
     @GetMapping("/historico/veiculo/{veiculoId}")
     @RolesAllowed({"employee", "manager", "admin"})
-    public ResponseEntity<List<CorretorVeiculo>> getHistoricoByVeiculoId(@PathVariable Long veiculoId) {
+    public ResponseEntity<CorretorVeiculoGroupByVeiculoDTO> getHistoricoByVeiculoId(@PathVariable Long veiculoId) {
         return ResponseEntity.ok(corretorVeiculoService.findHistoricoByVeiculoId(veiculoId));
     }
 
@@ -70,5 +71,15 @@ public class CorretorVeiculoController {
                                                                @RequestParam(required = false) LocalDateTime dataDevolucao) {
         return ResponseEntity.ok(corretorVeiculoService.updateDataDevolucao(id,
                 dataDevolucao == null ? LocalDateTime.now() : dataDevolucao));
+    }
+
+    @GetMapping("/veiculo/{veiculoId}/historico-corretores")
+    @RolesAllowed({"employee", "manager", "admin"})
+    public ResponseEntity<CorretorVeiculoGroupByVeiculoDTO> getHistoricoCorretoresByVeiculoId(@PathVariable Long veiculoId) {
+        var corretorVeiculo = corretorVeiculoService.findHistoricoCorretoresByVeiculoId(veiculoId);
+        if (corretorVeiculo == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(corretorVeiculoService.findHistoricoByVeiculoId(veiculoId));
     }
 }

@@ -1,6 +1,7 @@
 package io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo;
 
 import io.github.mateuussilvapb.app_corretores.infra.corretor.CorretorService;
+import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.dto.CorretorVeiculoGroupByVeiculoDTO;
 import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.exceptions.CorretorVeiculoByCorretorIdNotFoundException;
 import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.exceptions.CorretorVeiculoByVeiculoIdNotFoundException;
 import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.exceptions.CorretorVeiculoNotFoundException;
@@ -48,8 +49,13 @@ public class CorretorVeiculoService {
         return corretorVeiculoRepository.findByCorretorId(corretorId).orElseThrow(() -> new CorretorVeiculoByCorretorIdNotFoundException(corretorId));
     }
 
-    public List<CorretorVeiculo> findHistoricoByVeiculoId(Long veiculoId) {
-        return corretorVeiculoRepository.findByVeiculoId(veiculoId).orElseThrow(() -> new CorretorVeiculoByVeiculoIdNotFoundException(veiculoId));
+    public CorretorVeiculoGroupByVeiculoDTO findHistoricoByVeiculoId(Long veiculoId) {
+        var listCorretorVeiculo =
+                corretorVeiculoRepository.findByVeiculoId(veiculoId).orElseThrow(() -> new CorretorVeiculoByVeiculoIdNotFoundException(veiculoId));
+        if (listCorretorVeiculo.isEmpty()) {
+            return null;
+        }
+        return new CorretorVeiculoGroupByVeiculoDTO().toCorretorVeiculoGroupByVeiculoDTO(listCorretorVeiculo);
     }
 
     public Optional<CorretorVeiculo> findTopByVeiculoIdAndDataDevolucaoIsNullOrderByIdDesc(Long veiculoId) {
@@ -60,5 +66,9 @@ public class CorretorVeiculoService {
         CorretorVeiculo corretorVeiculo = this.findById(id);
         corretorVeiculo.setDataDevolucao(dataDevolucao);
         return corretorVeiculoRepository.save(corretorVeiculo);
+    }
+
+    public List<CorretorVeiculo> findHistoricoCorretoresByVeiculoId(Long veiculoId) {
+        return corretorVeiculoRepository.findByVeiculoId(veiculoId).orElseThrow(() -> new CorretorVeiculoByVeiculoIdNotFoundException(veiculoId));
     }
 }
