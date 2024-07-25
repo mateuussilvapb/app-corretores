@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +47,14 @@ public class CorretorVeiculoService {
 
     public List<CorretorVeiculo> findHistoricoByCorretorId(Long corretorId) {
         this.corretorService.findById(corretorId);
-        return corretorVeiculoRepository.findByCorretorId(corretorId).orElseThrow(() -> new CorretorVeiculoByCorretorIdNotFoundException(corretorId));
+
+        List<CorretorVeiculo> corretorVeiculos = corretorVeiculoRepository.findByCorretorId(corretorId)
+                .orElseThrow(() -> new CorretorVeiculoByCorretorIdNotFoundException(corretorId));
+
+        corretorVeiculos.sort(Comparator.comparing(CorretorVeiculo::getDataDevolucao, Comparator.nullsFirst(Comparator.naturalOrder()))
+                .thenComparing(CorretorVeiculo::getCreatedAt, Comparator.reverseOrder()));
+
+        return corretorVeiculos;
     }
 
     public CorretorVeiculoGroupByVeiculoDTO findHistoricoByVeiculoId(Long veiculoId) {
