@@ -1,8 +1,9 @@
 package io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo;
 
-import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.dto.CorretorVeiculoGroupByVeiculoDTO;
 import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.dto.CorretorVeiculoByCorretorIDResponse;
+import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.dto.CorretorVeiculoGroupByVeiculoDTO;
 import io.github.mateuussilvapb.app_corretores.infra.corretorVeiculo.request.CorretorVeiculoRequest;
+import io.github.mateuussilvapb.app_corretores.util.DateLocalDateTimeUtil;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -68,9 +69,11 @@ public class CorretorVeiculoController {
     @PutMapping("/{id}/devolucao")
     @RolesAllowed({"employee", "manager", "admin"})
     public ResponseEntity<CorretorVeiculo> updateDataDevolucao(@PathVariable Long id,
-                                                               @RequestParam(required = false) LocalDateTime dataDevolucao) {
-        return ResponseEntity.ok(corretorVeiculoService.updateDataDevolucao(id,
-                dataDevolucao == null ? LocalDateTime.now() : dataDevolucao));
+                                                               @RequestBody(required = false) DateLocalDateTimeUtil devolucaoRequest) {
+        LocalDateTime dataDevolucao = devolucaoRequest != null && devolucaoRequest.getDate() != null
+                ? devolucaoRequest.getDate()
+                : LocalDateTime.now();
+        return ResponseEntity.ok(corretorVeiculoService.updateDataDevolucao(id, dataDevolucao));
     }
 
     @GetMapping("/veiculo/{veiculoId}/historico-corretores")
